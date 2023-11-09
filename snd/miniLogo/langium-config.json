@@ -1,0 +1,15 @@
+{
+    "projectName": "MiniLogo",
+    "languages": [{
+        "id": "mini-logo",
+        "grammar": "src/language/mini-logo.langium",
+        "fileExtensions": [".minilogo"],
+        "textMate": {
+            "out": "syntaxes/mini-logo.tmLanguage.json"
+        },
+        "monarch": {
+            "out": "syntaxes/mini-logo.monarch.ts"
+        }
+    }],
+    "out": "src/language/generated"
+}

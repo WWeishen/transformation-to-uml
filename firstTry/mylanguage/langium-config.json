@@ -1,0 +1,15 @@
+{
+    "projectName": "MyLanguage",
+    "languages": [{
+        "id": "my-language",
+        "grammar": "src/language/my-language.langium",
+        "fileExtensions": [".ml"],
+        "textMate": {
+            "out": "syntaxes/my-language.tmLanguage.json"
+        },
+        "monarch": {
+            "out": "syntaxes/my-language.monarch.ts"
+        }
+    }],
+    "out": "src/language/generated"
+}
