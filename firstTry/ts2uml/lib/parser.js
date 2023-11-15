@@ -18,21 +18,21 @@ class TSNode {
         };
         this.getType = () => this.type;
         this.getObject = () => {
-            let map = {};
+            let map = {};               //object vide
             map[this.name] = this.children.length
                 ? this.children
                       .map(child => child.getObject())
-                      .reduce((pv, child) => {
+                      .reduce((pv, child) => {          //union tout les element,
                           for (let key in child) {
                               if (pv.hasOwnProperty(key) || key in pv) {
-                                  if (key != "Number" && key != "Date"){
+                                  if (key != "Number" && key != "Date"){//assign direct
                                     // console.log("key:"+key);
                                     Object.assign(pv[key], child[key]);
                                   }else {
-                                    pv[key] = child[key];
+                                    pv[key] = child[key];//union element
                                     }
                               } else {
-                                  pv[key] = child[key];
+                                  pv[key] = child[key];//union element
                               }
                           }
                           return pv;
@@ -44,12 +44,20 @@ class TSNode {
         this.type = type;
     }
 }
+
+//currying function; param is parent, return a function who takes one param 'node'
 let visit = parent => node => {
-    // console.log("node text: "+node.getText())
-    //delete node.parent;
-    console.log("rere");
-    console.log(customStringify(node));
-    console.log("rere");
+    //console.log("node text: "+node.getText())
+    //console.log(customStringify(node));
+    //if(customStringify(node)){console.log("***");console.log(customStringify(node));console.log("***");}
+    let test = customStringify(node);       //toString
+    if (test && test.includes("Statement")) {       //if contient "Statement"
+        if (ts.isInterfaceDeclaration(node)){       //if type is interfaceDeclaration
+            let m1 = node.members[1]                //get node's info
+            //console.log("######"+m1.type.typeName.escapedText+ "----" + m1.type.typeArguments[0].typeName.escapedText);
+           // ts.forEachChild(node, console.log(node.pos))
+        }
+    }
     switch (node.kind) {
         case ts.SyntaxKind.NamedExports:
             console.log("typeLiteral: "+node.getText())
@@ -62,34 +70,47 @@ let visit = parent => node => {
             ts.forEachChild(node, visit(parent));
             break;
         case ts.SyntaxKind.InterfaceDeclaration:
+            
             let interfaceName = node.name.text;
             parent[interfaceName] = {};
             ts.forEachChild(node, visit(parent.addChildren(interfaceName)));
             break;
         case ts.SyntaxKind.PropertySignature:
-            let propertyName = node.name;
+            //console.log("~~~~~~"+node.pos)
+            let propertyName = node.name; 
             let propertyType = node.type;
             let arrayDeep = 0;
             let realPropertyName =
                 'string' !== typeof propertyName && 'text' in propertyName
                     ? propertyName.text
                     : propertyName;
-            while (propertyType.kind === ts.SyntaxKind.ArrayType) {
+            while (propertyType.kind === ts.SyntaxKind.ArrayType) {//if type is array
                 arrayDeep++;
                 propertyType = propertyType.elementType;
             }
             if (propertyType.kind === ts.SyntaxKind.TypeReference) {
                 //console.log('tr '+ JSON.stringify(propertyType));
-
-                let realPropertyType = propertyType.typeName;
+                
+                let realPropertyType = propertyType;
                 parent.addChildren(
                     realPropertyName,
                     'Array<'.repeat(arrayDeep) +
                         (realPropertyType.kind === ts.SyntaxKind.QualifiedName
-                            ? realPropertyType.getText()
+                            //? realPropertyType.getText()+"toto"
+                            ? realPropertyType.typeName.text + "toto"
+                            /*: ! 'text' in realPropertyType
+                              ? realPropertyType +"zaza"
+                              : realPropertyType.typeArguments?.length > 0 
+                                ? realPropertyType.text+"<"+realPropertyType?.typeArguments[0]?.type.typeName+">"
+                                : "ici"
+                                */
                             : 'text' in realPropertyType
-                              ? realPropertyType.text
-                              : realPropertyType) +
+                                ? realPropertyType.typeName.text +"zaza1"     
+                                : realPropertyType.typeArguments?.length > 0 
+                                    //? realPropertyType.type.text + "<" + realPropertyType?.typeArguments[0]?.type.typeName + ">"
+                                    ? realPropertyType.typeName.text + "<" + realPropertyType.typeArguments[0].typeName.text + ">"
+                                    : realPropertyType.typeName.text
+                        ) + 
                         '>'.repeat(arrayDeep)
                 );
             } else {
@@ -109,6 +130,8 @@ let visit = parent => node => {
 module.exports = function(filename, options) {
     const ROOT_NAME = 'root';
     const node = new TSNode(ROOT_NAME);
+    //console.log(node.name);
+    //console.log(node.type);
 
     let program = ts.createProgram([filename], options);
     // let checker = program.getTypeChecker();
@@ -153,10 +176,7 @@ function customStringify(obj, seen = new Set()) {
         return `{${objectContents.join(', ')}}`;
       }
     } else {
-      // Pour les valeurs primitives
-      return JSON.stringify(obj);
+      
+        return JSON.stringify(obj); 
     }
 }
-  
-
-  

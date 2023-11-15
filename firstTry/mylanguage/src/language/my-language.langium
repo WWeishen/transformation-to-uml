@@ -1,9 +1,10 @@
 grammar MyLanguage
 
 entry Model:
-    (statements+=(VarDecl | Assignement)*);
+    (statements+=Statement*);
 
-
+Statement: 
+    (VarDecl | Assignement);
 VarDecl:
     'var' name=ID ";";
 

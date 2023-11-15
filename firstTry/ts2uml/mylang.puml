@@ -1,0 +1,23 @@
+@startuml mydiag
+
+class Model {
+  statements: Array
+}
+
+class VarDecl {
+  name: string
+}
+
+class VarRef {
+  ref: Reference
+}
+
+class Assignement {
+  left: VarRef
+  value: number
+}
+
+Model --|> Assignement
+Assignement "1" o-- "1" VarRef
+Model "1" o-- "0..*" VarDecl
+@enduml
