@@ -1,4 +1,4 @@
-{pos: 1115, end: 1226, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 264, symbol: undefined, localSymbol: undefined, modifiers: [
+{pos: 1115, end: 1226, flags: 0, modifierFlagsCache: 0, transformFVarReflags: 1, parent: undefined, kind: 264, symbol: undefined, localSymbol: undefined, modifiers: [
         {pos: 1115, end: 1125, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 95
         }
     ], name: {pos: 1135, end: 1141, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Model", jsDoc: undefined, flowNode: undefined, symbol: undefined

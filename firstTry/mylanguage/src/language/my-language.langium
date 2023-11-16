@@ -5,6 +5,7 @@ entry Model:
 
 Statement: 
     (VarDecl | Assignement);
+
 VarDecl:
     'var' name=ID ";";
 
