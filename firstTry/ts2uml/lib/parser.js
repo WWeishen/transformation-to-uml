@@ -46,18 +46,7 @@ class TSNode {
 
 //currying function; param is parent, return a function who takes one param 'node'
 let visit = parent => node => {
-    //console.log("node text: "+node.getText())
-    //console.log(customStringify(node));
-    //if(customStringify(node)){console.log("***");console.log(customStringify(node));console.log("***");}
-    let test = customStringify(node);       //toString
-    if (test && test.includes("Statement")) {       //if contient "Statement"
-        //console.log(test);
-        if (ts.isInterfaceDeclaration(node)){       //if type is interfaceDeclaration
-            //let m1 = node.members[1]                //get node's info
-            //console.log("######"+m1.type.typeName.escapedText+ "----" + m1.type.typeArguments[0].typeName.escapedText);
-           // ts.forEachChild(node, console.log(node.pos))
-        }
-    }
+    //let test = customStringify(node);console.log(test);
     switch (node.kind) {
         case ts.SyntaxKind.NamedExports:
             console.log("typeLiteral: "+node.getText())
@@ -70,13 +59,25 @@ let visit = parent => node => {
             ts.forEachChild(node, visit(parent));
             break;
         case ts.SyntaxKind.InterfaceDeclaration:
-            let interfance = node 
-            let interfaceName = node.name.text+" <interface>";
+            //let interfance = node 
+            let interfaceName = node.name.text;
             parent[interfaceName] = {};
             ts.forEachChild(node, visit(parent.addChildren(interfaceName)));
             break;
+        case ts.SyntaxKind.TypeAliasDeclaration:      
+            let TypeAliasDeclarationName = node.name.text;
+            parent[TypeAliasDeclarationName] = {};
+            ts.forEachChild(node, visit(parent.addChildren(TypeAliasDeclarationName)));
+            break;
+        case ts.SyntaxKind.UnionType:           //192; types:[Assi/VarD .kind = 183 = TypeReference]
+            //parent.addChildren(ts.forEachChild(node,visit(parent.addChildren(attributType.types))));
+            //addChildren(name,type) ; visit(parent.addChildren(node.name.text))
+            //parent.addChildren(ts.forEachChild(node.types,visit(parent.addChildren(node.types[0].typeName.text))));
+            for(var i=0; i<node.types.length ; i++){
+                ts.forEachChild(node, visit(parent.addChildren(node.types[i].typeName.text)));
+            }
+            break;
         case ts.SyntaxKind.PropertySignature:
-            //console.log("~~~~~~"+node.pos)
             let propertyName = node.name; 
             let propertyType = node.type;
             let arrayDeep = 0;

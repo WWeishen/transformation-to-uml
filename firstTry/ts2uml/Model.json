@@ -1,37 +1,136 @@
-{pos: 1115, end: 1226, flags: 0, modifierFlagsCache: 0, transformFVarReflags: 1, parent: undefined, kind: 264, symbol: undefined, localSymbol: undefined, modifiers: [
-        {pos: 1115, end: 1125, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 95
+{pos: 570, end: 620, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 265, symbol: undefined, localSymbol: undefined, 
+    modifiers: [
+        {pos: 570, end: 580, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 95
         }
-    ], name: {pos: 1135, end: 1141, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Model", jsDoc: undefined, flowNode: undefined, symbol: undefined
-    }, typeParameters: undefined, heritageClauses: [
-        {pos: 1141, end: 1157, flags: 0, modifierFlagsCache: 0, transformFlags: 1024, parent: undefined, kind: 298, token: 96, types: [
-                {pos: 1149, end: 1157, flags: 0, modifierFlagsCache: 0, transformFlags: 1024, parent: undefined, kind: 233, expression: {pos: 1149, end: 1157, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "AstNode", jsDoc: undefined, flowNode: undefined, symbol: undefined
-                    }, typeArguments: undefined
+    ], 
+    name: {pos: 585, end: 595, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Statement", jsDoc: undefined, flowNode: undefined, symbol: undefined
+    }, typeParameters: undefined, 
+    type: {pos: 597, end: 619, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 192, 
+            types: [
+            {pos: 597, end: 609, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 183, typeName: {pos: 597, end: 609, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Assignement", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                }, typeArguments: undefined
+            },
+            {pos: 611, end: 619, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 183, typeName: {pos: 611, end: 619, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "VarDecl", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                }, typeArguments: undefined
+            }
+        ]
+    }, jsDoc: undefined, locals: undefined, nextContainer: undefined
+}
+
+
+
+
+
+*************************************************************************************************************
+
+
+
+
+{pos: 0, end: 342, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 272, modifiers: undefined, importClause: {pos: 269, end: 326, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: [Circular Reference
+        ], kind: 273, symbol: undefined, localSymbol: undefined, isTypeOnly: true, name: undefined, namedBindings: {pos: 274, end: 326, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+            ], kind: 275, elements: [
+                {pos: 276, end: 284, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                    ], kind: 276, symbol: undefined, localSymbol: undefined, isTypeOnly: false, propertyName: undefined, name: {pos: 276, end: 284, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                        ], kind: 80, escapedText: "AstNode", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                    }
+                },
+                {pos: 285, end: 295, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                    ], kind: 276, symbol: undefined, localSymbol: undefined, isTypeOnly: false, propertyName: undefined, name: {pos: 285, end: 295, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                        ], kind: 80, escapedText: "Reference", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                    }
+                },
+                {pos: 296, end: 310, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                    ], kind: 276, symbol: undefined, localSymbol: undefined, isTypeOnly: false, propertyName: undefined, name: {pos: 296, end: 310, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                        ], kind: 80, escapedText: "ReferenceInfo", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                    }
+                },
+                {pos: 311, end: 324, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                    ], kind: 276, symbol: undefined, localSymbol: undefined, isTypeOnly: false, propertyName: undefined, name: {pos: 311, end: 324, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                        ], kind: 80, escapedText: "TypeMetaData", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                    }
                 }
             ]
         }
-    ], members: [
-        {pos: 1159, end: 1189, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 171, symbol: undefined, localSymbol: undefined, modifiers: [
-                {pos: 1159, end: 1173, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 148
-                }
-            ], name: {pos: 1173, end: 1179, flags: 0, modifierFlagsCache: 0, 
-transformFlags: 0, parent: undefined, kind: 80, escapedText: "$type", jsDoc: undefined, flowNode: undefined, symbol: undefined
-            }, type: {pos: 1180, end: 1188, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 201, literal: {pos: 1180, 
-end: 1188, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 11, symbol: undefined, localSymbol: undefined, text: "Model", singleQuote: undefined, 
-hasExtendedUnicodeEscape: false
-                }
-            }, questionToken: undefined, initializer: undefined, jsDoc: undefined
-        },
-        {pos: 1189, end: 1223, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 171, symbol: undefined, localSymbol: undefined, modifiers: undefined, 
-            name: {pos: 1189, end: 1205, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "statements", jsDoc: undefined, flowNode: undefined, symbol: undefined},
-            type: {pos: 1206, end: 1223, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 183, 
-                typeName: {pos: 1206, end: 1212, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Array", jsDoc: undefined, flowNode: undefined, symbol: undefined},
-                typeArguments: [
-                    {pos: 1213, end: 1222, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 183, typeName: {pos: 1213, end: 1222, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Statement", jsDoc: 
-undefined, flowNode: undefined, symbol: undefined
-                        }, typeArguments: undefined
-                    }
-                ]
-            }, questionToken: undefined, initializer: undefined, jsDoc: undefined
+    }, moduleSpecifier: {pos: 331, end: 341, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+        ], kind: 11, symbol: undefined, localSymbol: undefined, text: "langium", singleQuote: undefined, hasExtendedUnicodeEscape: false
+    }, assertClause: undefined, jsDoc: [
+        {pos: 0, end: 237, flags: 16777216, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+            ], kind: 327, comment: "****************************************************************************\r\nThis file was generated by langium-cli 2.0.1.\r\nDO NOT EDIT MANUALLY!\r\n****************************************************************************", tags: undefined
         }
-    ], jsDoc: undefined
+    ]
+}
+{pos: 342, end: 392, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 272, modifiers: undefined, importClause: {pos: 350, end: 376, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+        ], kind: 273, symbol: undefined, localSymbol: undefined, isTypeOnly: false, name: undefined, namedBindings: {pos: 350, end: 376, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+            ], kind: 275, elements: [
+                {pos: 352, end: 374, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                    ], kind: 276, symbol: undefined, localSymbol: undefined, isTypeOnly: false, propertyName: undefined, name: {pos: 352, end: 374, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+                        ], kind: 80, escapedText: "AbstractAstReflection", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                    }
+                }
+            ]
+        }
+    }, moduleSpecifier: {pos: 381, end: 391, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: [Circular Reference
+        ], kind: 11, symbol: undefined, localSymbol: undefined, text: "langium", singleQuote: undefined, hasExtendedUnicodeEscape: false
+    }, assertClause: undefined, jsDoc: undefined
+}
+{pos: 392, end: 570, flags: 0, modifierFlagsCache: 0, transformFlags: 4457472, parent: undefined, kind: 243, modifiers: [
+        {pos: 392, end: 402, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 95
+        }
+    ], declarationList: {pos: 402, end: 569, flags: 2, modifierFlagsCache: 0, transformFlags: 4457472, parent: undefined, kind: 261, declarations: [
+            {pos: 408, end: 569, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 260, symbol: undefined, localSymbol: undefined, name: {pos: 408, end: 428, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "MyLanguageTerminals", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                }, exclamationToken: undefined, type: undefined, initializer: {pos: 430, end: 569, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 210, symbol: undefined, localSymbol: undefined, properties: [
+                        {pos: 432, end: 447, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 303, symbol: 
+undefined, localSymbol: undefined, name: {pos: 432, end: 440, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "WS", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                            }, initializer: {pos: 441, end: 447, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 14, text: "/\\s+/"
+                            }, modifiers: undefined, questionToken: undefined, exclamationToken: undefined, jsDoc: undefined
+                        },
+                        {pos: 448, end: 475, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 303, symbol: undefined, localSymbol: undefined, name: {pos: 448, end: 456, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "ID", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                            }, initializer: {pos: 457, end: 475, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 14, text: "/[_a-zA-Z][\\w_]*/"
+                            }, modifiers: undefined, questionToken: undefined, exclamationToken: undefined, jsDoc: undefined
+                        },
+                        {pos: 476, end: 495, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 303, symbol: undefined, localSymbol: undefined, name: {pos: 476, end: 485, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "INT", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                            }, initializer: {pos: 486, end: 495, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 14, text: "/[0-9]+/"
+                            }, modifiers: undefined, questionToken: undefined, exclamationToken: undefined, jsDoc: undefined
+                        },
+                        {pos: 496, end: 532, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 303, symbol: undefined, localSymbol: undefined, name: {pos: 496, end: 512, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "ML_COMMENT", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                            }, initializer: {pos: 513, end: 532, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 14, text: "/\\/\\*[\\s\\S]*?\\*\\//"
+                            }, modifiers: undefined, questionToken: undefined, exclamationToken: undefined, jsDoc: undefined
+                        },
+                        {pos: 533, end: 565, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 303, symbol: undefined, localSymbol: undefined, name: {pos: 533, end: 549, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "SL_COMMENT", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                            }, initializer: {pos: 550, end: 565, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 14, text: "/\\/\\/[^\\n\\r]*/"
+                            }, modifiers: undefined, questionToken: undefined, exclamationToken: undefined, jsDoc: undefined
+                        }
+                    ], multiLine: true, jsDoc: undefined
+                }, jsDoc: undefined
+            }
+        ]
+    }, jsDoc: undefined, flowNode: undefined
+}
+{pos: 570, end: 620, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 265, symbol: undefined, localSymbol: undefined, modifiers: [
+        {pos: 570, end: 580, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 95
+        }
+    ], name: {pos: 585, end: 595, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Statement", jsDoc: undefined, flowNode: undefined, symbol: undefined
+    }, typeParameters: undefined, type: {pos: 597, end: 619, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, 
+kind: 192, types: [
+            {pos: 597, end: 609, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 183, typeName: {pos: 597, end: 609, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Assignement", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                }, typeArguments: undefined
+            },
+            {pos: 611, end: 619, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 183, typeName: {pos: 611, end: 619, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "VarDecl", jsDoc: undefined, flowNode: undefined, symbol: undefined
+                }, typeArguments: undefined
+            }
+        ]
+    }, jsDoc: undefined, locals: undefined, nextContainer: undefined
+}
+{pos: 570, end: 580, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 95
+}
+{pos: 585, end: 595, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Statement", jsDoc: undefined, flowNode: undefined, symbol: undefined
+}
+{pos: 597, end: 619, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 192, types: [
+        {pos: 597, end: 609, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 183, typeName: {pos: 597, end: 609, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "Assignement", jsDoc: undefined, flowNode: undefined, symbol: undefined
+            }, typeArguments: undefined
+        },
+        {pos: 611, end: 619, flags: 0, modifierFlagsCache: 0, transformFlags: 1, parent: undefined, kind: 183, typeName: {pos: 611, end: 619, flags: 0, modifierFlagsCache: 0, transformFlags: 0, parent: undefined, kind: 80, escapedText: "VarDecl", jsDoc: undefined, flowNode: undefined, symbol: undefined
+            }, typeArguments: undefined
+        }
+    ]
 }
