@@ -18,11 +18,11 @@ class TSNode {
         };
         this.getType = () => this.type;
         this.getObject = () => {
-            let map = {};               //object vide
+            let map = {};
             map[this.name] = this.children.length
                 ? this.children
                       .map(child => child.getObject())
-                      .reduce((pv, child) => {          //union tout les element
+                      .reduce((pv, child) => {          //union
                           for (let key in child) {
                               if (pv.hasOwnProperty(key) || key in pv) {
                                   if (key != "Number" && key != "Date"){//assign direct
@@ -64,7 +64,7 @@ let visit = parent => node => {
             ts.forEachChild(node, visit(parent.addChildren(interfaceName)));
             break;
         case ts.SyntaxKind.TypeAliasDeclaration:
-            if(node.type.kind=== ts.SyntaxKind.UnionType){
+            if(node.type.kind === ts.SyntaxKind.UnionType){
                 let TypeAliasDeclarationName = node.name.text;
                 parent[TypeAliasDeclarationName] = {};
                 ts.forEachChild(node, visit(parent.addChildren(TypeAliasDeclarationName)));
@@ -112,7 +112,6 @@ let visit = parent => node => {
                 }
             }
             break;
-        
         default:
     }
 };
@@ -132,9 +131,7 @@ module.exports = function(filename, options) {
         }
     })
     // let sourceFile = program.getSourceFiles()[1];
-
     // ts.forEachChild(sourceFile, visit(node));
-
     // return node.getObject()[ROOT_NAME];
 }
 

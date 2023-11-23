@@ -1,7 +1,9 @@
 @startuml mydiag
 
 class Model {
-  statements: Array
+}
+
+class Statement{
 }
 
 class VarDecl {
@@ -9,15 +11,16 @@ class VarDecl {
 }
 
 class VarRef {
-  ref: Reference
 }
 
 class Assignement {
-  left: VarRef
   value: number
 }
 
-Model --|> Assignement
-Assignement "1" o-- "1" VarRef
-Model "1" o-- "0..*" VarDecl
-@enduml
+Statement <|-- VarDecl
+Statement <|-- Assignement
+VarDecl -[hidden]> Assignement
+Assignement "container\n1" *-- "left\n1" VarRef
+Model "container\n1" *--> "statements\n0..*" Statement
+VarRef --> "reference\n1" VarDecl
+@enduml 
