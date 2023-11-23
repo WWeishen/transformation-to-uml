@@ -59,22 +59,21 @@ let visit = parent => node => {
             ts.forEachChild(node, visit(parent));
             break;
         case ts.SyntaxKind.InterfaceDeclaration:
-            //let interfance = node 
             let interfaceName = node.name.text;
             parent[interfaceName] = {};
             ts.forEachChild(node, visit(parent.addChildren(interfaceName)));
             break;
-        case ts.SyntaxKind.TypeAliasDeclaration:      
-            let TypeAliasDeclarationName = node.name.text;
-            parent[TypeAliasDeclarationName] = {};
-            ts.forEachChild(node, visit(parent.addChildren(TypeAliasDeclarationName)));
+        case ts.SyntaxKind.TypeAliasDeclaration:
+            if(node.type.kind=== ts.SyntaxKind.UnionType){
+                let TypeAliasDeclarationName = node.name.text;
+                parent[TypeAliasDeclarationName] = {};
+                ts.forEachChild(node, visit(parent.addChildren(TypeAliasDeclarationName)));
+            }
             break;
         case ts.SyntaxKind.UnionType:           //192; types:[Assi/VarD .kind = 183 = TypeReference]
-            //parent.addChildren(ts.forEachChild(node,visit(parent.addChildren(attributType.types))));
-            //addChildren(name,type) ; visit(parent.addChildren(node.name.text))
-            //parent.addChildren(ts.forEachChild(node.types,visit(parent.addChildren(node.types[0].typeName.text))));
             for(var i=0; i<node.types.length ; i++){
-                ts.forEachChild(node, visit(parent.addChildren(node.types[i].typeName.text)));
+                //ts.forEachChild(node, visit(parent.addChildren(node.types[i].typeName.text)));
+                ts.forEachChild(parent.addChildren(node.types[i].typeName.text));
             }
             break;
         case ts.SyntaxKind.PropertySignature:

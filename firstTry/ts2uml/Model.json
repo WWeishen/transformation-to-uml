@@ -17,7 +17,285 @@
     }, jsDoc: undefined, locals: undefined, nextContainer: undefined
 }
 
-
+{
+    "pos": 570,
+    "end": 620,
+    "flags": 0,
+    "modifierFlagsCache": 0,
+    "transformFlags": 1,
+    "kind": 265,
+    "modifiers": [
+        {
+            "pos": 570,
+            "end": 580,
+            "flags": 0,
+            "modifierFlagsCache": 0,
+            "transformFlags": 0,
+            "kind": 95
+        }
+    ],
+    "name": {
+        "pos": 585,
+        "end": 595,
+        "flags": 0,
+        "modifierFlagsCache": 0,
+        "transformFlags": 0,
+        "kind": 80,
+        "escapedText": "Statement"
+    },
+    "type": {
+        "pos": 597,
+        "end": 619,
+        "flags": 0,
+        "modifierFlagsCache": 0,
+        "transformFlags": 1,
+        "kind": 192,
+        "types": [
+            {
+                "pos": 597,
+                "end": 609,
+                "flags": 0,
+                "modifierFlagsCache": 0,
+                "transformFlags": 1,
+                "kind": 183,
+                "typeName": {
+                    "pos": 597,
+                    "end": 609,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "kind": 80,
+                    "escapedText": "Assignement"
+                }
+            },
+            {
+                "pos": 611,
+                "end": 619,
+                "flags": 0,
+                "modifierFlagsCache": 0,
+                "transformFlags": 1,
+                "kind": 183,
+                "typeName": {
+                    "pos": 611,
+                    "end": 619,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "kind": 80,
+                    "escapedText": "VarDecl"
+                }
+            }
+        ]
+    }
+}
+****
+{
+    "pos": 1949,
+    "end": 2105,
+    "flags": 0,
+    "modifierFlagsCache": 0,
+    "transformFlags": 1,
+    "kind": 265,
+    "modifiers": [
+        {
+            "pos": 1949,
+            "end": 1959,
+            "flags": 0,
+            "modifierFlagsCache": 0,
+            "transformFlags": 0,
+            "kind": 95
+        }
+    ],
+    "name": {
+        "pos": 1964,
+        "end": 1982,
+        "flags": 0,
+        "modifierFlagsCache": 0,
+        "transformFlags": 0,
+        "kind": 80,
+        "escapedText": "MyLanguageAstType"
+    },
+    "type": {
+        "pos": 1984,
+        "end": 2105,
+        "flags": 0,
+        "modifierFlagsCache": 0,
+        "transformFlags": 1,
+        "kind": 187,
+        "members": [
+            {
+                "pos": 1986,
+                "end": 2016,
+                "flags": 0,
+                "modifierFlagsCache": 0,
+                "transformFlags": 1,
+                "kind": 171,
+                "name": {
+                    "pos": 1986,
+                    "end": 2003,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "kind": 80,
+                    "escapedText": "Assignement"
+                },
+                "type": {
+                    "pos": 2004,
+                    "end": 2016,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 1,
+                    "kind": 183,
+                    "typeName": {
+                        "pos": 2004,
+                        "end": 2016,
+                        "flags": 0,
+                        "modifierFlagsCache": 0,
+                        "transformFlags": 0,
+                        "kind": 80,
+                        "escapedText": "Assignement"
+                    }
+                }
+            },
+            {
+                "pos": 2016,
+                "end": 2034,
+                "flags": 0,
+                "modifierFlagsCache": 0,
+                "transformFlags": 1,
+                "kind": 171,
+                "name": {
+                    "pos": 2016,
+                    "end": 2027,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "kind": 80,
+                    "escapedText": "Model"
+                },
+                "type": {
+                    "pos": 2028,
+                    "end": 2034,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 1,
+                    "kind": 183,
+                    "typeName": {
+                        "pos": 2028,
+                        "end": 2034,
+                        "flags": 0,
+                        "modifierFlagsCache": 0,
+                        "transformFlags": 0,
+                        "kind": 80,
+                        "escapedText": "Model"
+                    }
+                }
+            },
+            {
+                "pos": 2034,
+                "end": 2060,
+                "flags": 0,
+                "modifierFlagsCache": 0,
+                "transformFlags": 1,
+                "kind": 171,
+                "name": {
+                    "pos": 2034,
+                    "end": 2049,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "kind": 80,
+                    "escapedText": "Statement"
+                },
+                "type": {
+                    "pos": 2050,
+                    "end": 2060,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 1,
+                    "kind": 183,
+                    "typeName": {
+                        "pos": 2050,
+                        "end": 2060,
+                        "flags": 0,
+                        "modifierFlagsCache": 0,
+                        "transformFlags": 0,
+                        "kind": 80,
+                        "escapedText": "Statement"
+                    }
+                }
+            },
+            {
+                "pos": 2060,
+                "end": 2082,
+                "flags": 0,
+                "modifierFlagsCache": 0,
+                "transformFlags": 1,
+                "kind": 171,
+                "name": {
+                    "pos": 2060,
+                    "end": 2073,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "kind": 80,
+                    "escapedText": "VarDecl"
+                },
+                "type": {
+                    "pos": 2074,
+                    "end": 2082,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 1,
+                    "kind": 183,
+                    "typeName": {
+                        "pos": 2074,
+                        "end": 2082,
+                        "flags": 0,
+                        "modifierFlagsCache": 0,
+                        "transformFlags": 0,
+                        "kind": 80,
+                        "escapedText": "VarDecl"
+                    }
+                }
+            },
+            {
+                "pos": 2082,
+                "end": 2102,
+                "flags": 0,
+                "modifierFlagsCache": 0,
+                "transformFlags": 1,
+                "kind": 171,
+                "name": {
+                    "pos": 2082,
+                    "end": 2094,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 0,
+                    "kind": 80,
+                    "escapedText": "VarRef"
+                },
+                "type": {
+                    "pos": 2095,
+                    "end": 2102,
+                    "flags": 0,
+                    "modifierFlagsCache": 0,
+                    "transformFlags": 1,
+                    "kind": 183,
+                    "typeName": {
+                        "pos": 2095,
+                        "end": 2102,
+                        "flags": 0,
+                        "modifierFlagsCache": 0,
+                        "transformFlags": 0,
+                        "kind": 80,
+                        "escapedText": "VarRef"
+                    }
+                }
+            }
+        ]
+    }
+}
 
 
 
