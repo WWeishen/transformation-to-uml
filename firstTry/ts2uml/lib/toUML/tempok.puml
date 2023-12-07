@@ -1,0 +1,18 @@
+Statement  <|--  Assignement
+Statement  <|--  VarDecl
+
+class Statement{
+}
+class Assignement{
+value:number
+}
+Assignement*--> "left\n1 "VarRef 
+class Model{
+}
+Model*-->"statements\n*"Statement
+class VarDecl{
+name:string
+}
+class VarRef{
+}
+VarRef--> "ref\n1 "VarDecl

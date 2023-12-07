@@ -1,10 +1,20 @@
 @startuml mydiag
 
-class Model {
-}
-
 class Statement{
 }
+Statement <|-- VarDecl 
+Statement <|-- Assignement
+VarDecl -[hidden]> Assignement
+
+class Assignement {
+  value: number
+}
+Assignement "container\n1" *-- "left\n1" VarRef
+
+class Model {
+}
+Model "container\n1" *--> "statements\n0..*" Statement
+
 
 class VarDecl {
   name: string
@@ -12,15 +22,5 @@ class VarDecl {
 
 class VarRef {
 }
-
-class Assignement {
-  value: number
-}
-
-Statement <|-- VarDecl
-Statement <|-- Assignement
-VarDecl -[hidden]> Assignement
-Assignement "container\n1" *-- "left\n1" VarRef
-Model "container\n1" *--> "statements\n0..*" Statement
 VarRef --> "reference\n1" VarDecl
 @enduml 

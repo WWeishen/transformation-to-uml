@@ -99,7 +99,8 @@ let visit = parent => node => {
                                 ? realPropertyType.typeName.text    
                                 : realPropertyType.typeArguments?.length > 0 
                                     ? realPropertyType.typeName.text + "<" + realPropertyType.typeArguments[0].typeName.text + ">"
-                                    : realPropertyType.typeName.text + "<" + realPropertyType.typeName.constructor.name + ">"
+                                    : //realPropertyType.typeName.text + "<" + realPropertyType.typeName.constructor.name + ">"
+                                    realPropertyType.typeName.text // model
                         ) + 
                     '>'.repeat(arrayDeep)
                 );
@@ -116,7 +117,7 @@ let visit = parent => node => {
     }
 };
 
-module.exports = function(filename, options) {
+module.exports = function getNode(filename, options) {
     const ROOT_NAME = 'root';
     const node = new TSNode(ROOT_NAME);
     let program = ts.createProgram([filename], options);
@@ -127,13 +128,17 @@ module.exports = function(filename, options) {
         if (f.fileName == filename){
             let sourceFile = f; 
             ts.forEachChild(sourceFile, visit(node));
-            console.log(node.getObject()[ROOT_NAME]);
+            const root  = node.getObject()[ROOT_NAME];
+            //console.log(root);
+            toPUml(node);
+            return node;
         }
     })
     // let sourceFile = program.getSourceFiles()[1];
     // ts.forEachChild(sourceFile, visit(node));
     // return node.getObject()[ROOT_NAME];
 }
+
 
 function customStringify(obj, seen = new Set()) {
     if (typeof obj === 'object' && obj !== null) {
@@ -160,4 +165,66 @@ function customStringify(obj, seen = new Set()) {
       
         return JSON.stringify(obj); 
     }
+}
+
+
+function toPUml(node) {//node.name="root"
+    var resultat="";
+    //var className = [];
+    for (let i=0; i < node.children.length; i++){
+        const elem = node.children[i];
+        //className.append(elem.name); 
+        resultat += "class "+ elem.name + "{\n";
+        let str= selectAttribute(elem);
+        resultat += str[0];
+        resultat += "}\n";
+        resultat += str[1];
+    }
+    console.log(resultat);
+    return resultat;
+}
+
+function selectAttribute(elem){
+    var str="";
+    var attribute="";
+    let lastName=[];
+    for (let i=0; i < elem.children.length; i++){
+        while(lastName.length!=0){
+            lastName.pop();
+        }
+        const c = elem.children[i];
+
+        if(c.type != undefined){
+            if(c.type.includes('Array<')){
+                let exp = /<([^>]+)>/;
+                let match = exp.exec(c.type);
+                str += elem.name + "*-->" + "\"" + c.name + "\\n*" + "\"" + match[1] +"\n";
+            }
+            else{
+                switch(c.name){
+                    case "$container" :
+                        str += "";
+                        break;
+                    case "left" :
+                        str += elem.name + "*--> " + "\"" + c.name  + "\\n1 " + "\"" + c.type + "\n";
+                        break;
+                    case "ref":
+                        let exp = /<([^>]+)>/;
+                        let match = exp.exec(c.type);
+                        str += elem.name + "--> " + "\"" + c.name + "\\n1" + "\"" + match[1] + "\n";
+                        break;
+                    default:
+                        attribute += c.name + ":" + c.type + "\n";
+                }
+            }
+        }else{
+            if(lastName.length != 0){
+                str + lastName + "-[hidden]>" + c.name;
+                lastName.pop();
+            }
+            lastName.push(c.name);
+            str += elem.name+ " <|-- "+ c.name+"\n";
+        }
+    }
+    return [attribute,str];
 }
