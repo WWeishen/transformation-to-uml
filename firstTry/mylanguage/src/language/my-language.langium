@@ -1,15 +1,17 @@
 grammar MyLanguage
 
 entry Model:
+    aNumber=INT
     (statements+=Statement*);
 
 Statement: 
-    (VarDecl | Assignement);
+    (VarDecl | Assignment);
 
 VarDecl:
+    (severalInt+=INT)*
     'var' name=ID ";";
 
-Assignement : left=VarRef ":=" value = INT;
+Assignment : left=VarRef ":=" value = INT;
 
 VarRef : 
     ref=[VarDecl];
