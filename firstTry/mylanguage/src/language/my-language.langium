@@ -8,7 +8,7 @@ Statement:
     (VarDecl | Assignment);
 
 VarDecl:
-    (severalInt+=INT)*
+    (severalInt+=INT*)
     'var' name=ID ";";
 
 Assignment : left=VarRef ":=" value = INT;

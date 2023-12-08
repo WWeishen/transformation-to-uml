@@ -72,7 +72,6 @@ let visit = parent => node => {
             break;
         case ts.SyntaxKind.UnionType:           //192; types:[Assi/VarD .kind = 183 = TypeReference]
             for(var i=0; i<node.types.length ; i++){
-                //ts.forEachChild(node, visit(parent.addChildren(node.types[i].typeName.text)));
                 ts.forEachChild(parent.addChildren(node.types[i].typeName.text));
             }
             break;
@@ -90,26 +89,15 @@ let visit = parent => node => {
             }
             if (propertyType.kind === ts.SyntaxKind.TypeReference) {
                 let realPropertyType = propertyType;
-                parent.addChildren(
-                    realPropertyName,
-                    'Array<'.repeat(arrayDeep) +
-                        (realPropertyType.kind === ts.SyntaxKind.QualifiedName
-                            ? realPropertyType.typeName.text
-                            : 'text' in realPropertyType
-                                ? realPropertyType.typeName.text    
-                                : realPropertyType.typeArguments?.length > 0 
-                                    ? realPropertyType.typeName?.text + "<" + realPropertyType.typeArguments[0].typeName?.text + ">"
-                                    : //realPropertyType.typeName.text + "<" + realPropertyType.typeName.constructor.name + ">"
-                                    realPropertyType.typeName.text // model
-                        ) + 
-                    '>'.repeat(arrayDeep)
-                );
+                //let typeName1="number";
+                let type = getNonPrimitiveArrayType(arrayDeep, realPropertyType)
+                if (type.includes("undefined")){
+                    type = 'Array<'+getPrimmitiveTypeName(propertyType.typeArguments[0])+'>';
+                }
+                parent.addChildren(realPropertyName,type);
             } else {
-                for (let type in  PROPERTY_TYPES) {
-                    if (propertyType.kind === PROPERTY_TYPES[type]) {
-                        parent.addChildren(realPropertyName, type);
-                        break;
-                    }
+                if(getPrimmitiveTypeName(propertyType)){
+                    parent.addChildren(realPropertyName, getPrimmitiveTypeName(propertyType));
                 }
             }
             break;
@@ -144,6 +132,27 @@ module.exports = function getNode(filename, options) {
     // return node.getObject()[ROOT_NAME];
 }
 
+
+function getPrimmitiveTypeName(typeKind) {
+    for (let type in PROPERTY_TYPES) {
+        if (typeKind.kind === PROPERTY_TYPES[type]) {
+            return type;
+        }
+    }
+}
+
+function getNonPrimitiveArrayType(arrayDeep, realPropertyType) {
+    return 'Array<'.repeat(arrayDeep) +
+        (realPropertyType.kind === ts.SyntaxKind.QualifiedName
+            ? realPropertyType.typeName.text
+            : 'text' in realPropertyType
+                ? realPropertyType.typeName.text
+                : realPropertyType.typeArguments?.length > 0
+                    ? realPropertyType.typeName.text + "<" + realPropertyType.typeArguments[0].typeName?.text + ">"
+                    : realPropertyType.typeName.text // model
+        ) +
+        '>'.repeat(arrayDeep);
+}
 
 function customStringify(obj, seen = new Set()) {
     if (typeof obj === 'object' && obj !== null) {
@@ -213,7 +222,7 @@ function toPUml(node) {//node.name="root"
         resultat += "}\n";
         resultat += str[1];
     }
-    console.log(resultat);
+    //console.log(resultat);
     return resultat;
 }
 
@@ -238,7 +247,6 @@ function selectAttribute(node,elem){
                 if(c.name != "$container"){
                     str += elem.name + "*--> " + "\"" + c.name  + "\\n1 " + "\"" + c.type + "\n";
                 }
-               
             }
             else{
                 attribute += c.name + ":" + c.type + "\n";
