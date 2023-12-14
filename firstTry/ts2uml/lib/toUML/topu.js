@@ -47,7 +47,6 @@ function selectAttribute(node,elem){
     var lastName=[];
     for (let i=0; i < elem.children.length; i++){
         const c = elem.children[i];
-        while(lastName.length !=0){lastName.pop();}
         if(c.type != undefined){
             if(c.type.includes('Array<')){
                 let exp = /<([^>]+)>/;
@@ -69,15 +68,16 @@ function selectAttribute(node,elem){
         }
         else{
             if(lastName.length != 0){
-                str + lastName[0] + "-[hidden]>" + c.name;
+                str += lastName[0] + "-[hidden]>" + c.name + "\n";
                 lastName.pop();
             }else{
                 lastName.push(c.name);
             }
-            str += elem.name+ " <|-- "+ c.name+"\n";
+            str += elem.name + " <|-- " + c.name+"\n";
         }
     }
     return [attribute,str];
 }
+
 
 module.exports = toPUml;

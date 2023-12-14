@@ -2,7 +2,10 @@ grammar MyLanguage
 
 entry Model:
     aNumber=INT
-    (statements+=Statement*);
+    (statements+=Statement | trucs+=Truc)*;
+
+Truc:
+    "Truc" id=ID;
 
 Statement: 
     (VarDecl | Assignment);
