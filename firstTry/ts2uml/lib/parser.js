@@ -7,7 +7,6 @@ const PROPERTY_TYPES = {
     boolean: ts.SyntaxKind.BooleanKeyword,
     number: ts.SyntaxKind.NumberKeyword,
     string: ts.SyntaxKind.StringKeyword,
-    define: ts.SyntaxKind.LiteralType,
 };
 
 class TSNode {
@@ -78,7 +77,8 @@ let visit = (parent,root) => node => {
                         ts.forEachChild(parent.addChildren(node.types[i].typeName.text));
                     }
                     else{
-                        let type = getPrimmitiveTypeName(node.types[i]);
+                        //let type = parent.name;
+                        let type = 'string';
                         ts.forEachChild(parent.addChildren(node.types[i].literal.text,type));
                     }
                 }
@@ -106,16 +106,15 @@ let visit = (parent,root) => node => {
             } else if(propertyType.kind === ts.SyntaxKind.UnionType && propertyName.text != "$container"){ //enum
                 let name = propertyName.text; let type = 'Enum<' + name + "Type" + '>'; 
                 parent.addChildren(name, type);
-
-                //enum type
                 let currentPosition = { parent, node }; // recoding position
+                //enum type
                 //add an interface "EnumType" since the root
                 parent = root;
                 let EnumName = name + "Type" ;
                 parent[EnumName] = {};
-                for(var i=0; i<propertyType.types.length ; i++){
+                //for(var i=0; i< propertyType.types.length ; i++){
                     ts.forEachChild(node, visit(parent.addChildren(EnumName),root));
-                }
+                //}
                 //go back to position recoding
                 parent = currentPosition.parent;
                 node = currentPosition.node;
