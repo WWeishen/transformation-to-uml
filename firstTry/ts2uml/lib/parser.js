@@ -59,31 +59,29 @@ let visit = (parent,root) => node => {
         case ts.SyntaxKind.ModuleBlock:
             ts.forEachChild(node, visit(parent,root));
             break;
-        case ts.SyntaxKind.InterfaceDeclaration:
+        case ts.SyntaxKind.InterfaceDeclaration:    //Structure
             let interfaceName = node.name.text;
-            parent[interfaceName] = {};
+            parent[interfaceName] = {};     //creat since the root
             ts.forEachChild(node, visit(parent.addChildren(interfaceName),root));
             break;
-        case ts.SyntaxKind.TypeAliasDeclaration:
-            if(node.type.kind === ts.SyntaxKind.UnionType){
+        case ts.SyntaxKind.TypeAliasDeclaration:        
+            if(node.type.kind === ts.SyntaxKind.UnionType){//Distribution
                 let TypeAliasDeclarationName = node.name.text;
-                parent[TypeAliasDeclarationName] = {};
+                parent[TypeAliasDeclarationName] = {};  //creat since the root
                 ts.forEachChild(node, visit(parent.addChildren(TypeAliasDeclarationName),root));
             }
             break;
-        case ts.SyntaxKind.UnionType:           //192; types:[Assi/VarD .kind = 183 = TypeReference]
-                for(var i=0; i<node.types.length ; i++){
+        case ts.SyntaxKind.UnionType:                   
+                for(var i=0; i<node.types.length ; i++){//Types for distribution
                     if(node.types[i].typeName){
                         ts.forEachChild(parent.addChildren(node.types[i].typeName.text));
                     }
-                    else{
-                        //let type = parent.name;
-                        //let type = 'enumType';
+                    else{//Enum value for enumType
                         ts.forEachChild(parent.addChildren("\"" + node.types[i].literal.text + "\""));
                     }
                 }
             break;         
-        case ts.SyntaxKind.PropertySignature:
+        case ts.SyntaxKind.PropertySignature:   //Element including in a structure
             let propertyName = node.name; 
             let propertyType = node.type;
             let arrayDeep = 0;
@@ -95,19 +93,19 @@ let visit = (parent,root) => node => {
                 arrayDeep++;
                 propertyType = propertyType.elementType;
             }
-            if (propertyType.kind === ts.SyntaxKind.TypeReference) {
+            if (propertyType.kind === ts.SyntaxKind.TypeReference) {    //reference
                 let realPropertyType = propertyType;
-                let type = getNonPrimitiveArrayType(arrayDeep, realPropertyType)
+                let type = getNonPrimitiveArrayType(arrayDeep, realPropertyType);//Type is a reference to another structure
                 if (type.includes("undefined")){
-                    type = 'Array<'+getPrimmitiveTypeName(propertyType.typeArguments[0])+'>';
+                    type = 'Array<'+getPrimmitiveTypeName(propertyType.typeArguments[0])+'>';//if not found then search in PROPERTY_TYPES
                 }
                 parent.addChildren(realPropertyName,type);
-            } else if(propertyType.kind === ts.SyntaxKind.UnionType && propertyName.text != "$container"){ //enum
+            } else if(propertyType.kind === ts.SyntaxKind.UnionType && propertyName.text != "$container"){ //enumType
                 let name = propertyName.text; 
                 let type = 'Enum<' + name + "Type" + '>'; 
                 parent.addChildren(name, type);
-                let currentPosition = { parent, node }; // recoding position
-                //enum type
+
+                let currentPosition = { parent, node };
                 //add an interface "EnumType" since the root
                 parent = root;
                 let EnumName = name + "Type" ;
@@ -117,8 +115,8 @@ let visit = (parent,root) => node => {
                 parent = currentPosition.parent;
                 node = currentPosition.node;
             }
-            else {
-                if(getPrimmitiveTypeName(propertyType)){
+            else {  //Type is none of Non-terminaux
+                if(getPrimmitiveTypeName(propertyType)){     //Primmitive Type
                     parent.addChildren(realPropertyName, getPrimmitiveTypeName(propertyType));
                 }
             }
@@ -131,15 +129,11 @@ module.exports = function getNode(filename, options) {
     const ROOT_NAME = 'root';
     const node = new TSNode(ROOT_NAME);
     let program = ts.createProgram([filename], options);
-    // let checker = program.getTypeChecker();
-    // checker.runWithCancellationToken()
-    // console.log(checker.getExportsOfModule())
     program.getSourceFiles().forEach((f) => {
         if (f.fileName == filename){
             let sourceFile = f; 
             ts.forEachChild(sourceFile, visit(node,node));
-            const root  = node.getObject()[ROOT_NAME];
-            console.log(root);
+            //const root  = node.getObject()[ROOT_NAME];console.log(root);
             let res = toPUml(node);/********************/
             fs.writeFile(filename +".puml", res, (err) => { 
                 if(err) { 
@@ -149,11 +143,7 @@ module.exports = function getNode(filename, options) {
             return node;
         }
     })
-    // let sourceFile = program.getSourceFiles()[1];
-    // ts.forEachChild(sourceFile, visit(node));
-    // return node.getObject()[ROOT_NAME];
 }
-
 
 function getPrimmitiveTypeName(typeKind) {
     for (let type in PROPERTY_TYPES) {
@@ -170,7 +160,6 @@ function getNonPrimitiveArrayType(arrayDeep, realPropertyType) {
             : 'text' in realPropertyType
                 ? realPropertyType.typeName.text
                 : realPropertyType.typeArguments?.length > 0
-                    //? realPropertyType.typeName.text + "<" + realPropertyType.typeArguments[0].typeName?.text + ">"
                     ? arrayTypeName(realPropertyType)
                     : realPropertyType.typeName.text // model
         ) +
@@ -179,34 +168,32 @@ function getNonPrimitiveArrayType(arrayDeep, realPropertyType) {
 
 function arrayTypeName(realPropertyType){
     let argumentType = realPropertyType.typeArguments[0].typeName?.text;
-    if(argumentType == 'Reference'){
+    if(argumentType == 'Reference'){//reference to another structure
         argumentType = realPropertyType.typeArguments[0].typeArguments[0].typeName.text;
     }
     return realPropertyType.typeName.text + "<" + argumentType + ">"
 }
 
-function customStringify(obj, seen = new Set()) {
-    if (typeof obj === 'object' && obj !== null) {
-      if (seen.has(obj)) {
-        return '[Circular Reference]';
-      }
+// function customStringify(obj, seen = new Set()) {
+//     if (typeof obj === 'object' && obj !== null) {
+//       if (seen.has(obj)) {
+//         return '[Circular Reference]';
+//       }
   
-      seen.add(obj);
+//       seen.add(obj);
 
-      if (Array.isArray(obj)) {
-        const arrayContents = obj.map(item => customStringify(item, seen));
-        return `[${arrayContents.join(', ')}]`;
-      } else {
-        const objectContents = Object.keys(obj).map(key => {
-          const value = customStringify(obj[key], seen);
-          return `${key}: ${value}`;
-        });
-        return `{${objectContents.join(', ')}}`;
-      }
-    } else {
+//       if (Array.isArray(obj)) {
+//         const arrayContents = obj.map(item => customStringify(item, seen));
+//         return `[${arrayContents.join(', ')}]`;
+//       } else {
+//         const objectContents = Object.keys(obj).map(key => {
+//           const value = customStringify(obj[key], seen);
+//           return `${key}: ${value}`;
+//         });
+//         return `{${objectContents.join(', ')}}`;
+//       }
+//     } else {
       
-        return JSON.stringify(obj); 
-    }
-}
-
-
+//         return JSON.stringify(obj); 
+//     }
+// }

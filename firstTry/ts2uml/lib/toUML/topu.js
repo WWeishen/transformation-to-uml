@@ -31,17 +31,18 @@ function toPUml(node) {//node.name="root"
     var resultat="";
     for (let i=0; i < node.children.length; i++){
         const elem = node.children[i];
+        //Class
         if(elem.type?.includes('Enum')){
-            resultat += "enum "+ elem.name + "{\n";
+            resultat += "enum "+ elem.name + "{\n";     //enum definition
 
         }else{
-            resultat += "class "+ elem.name + "{\n";
+            resultat += "class "+ elem.name + "{\n";    //class definition
 
         }
         let str= selectAttribute(node,elem);
-        resultat += str[0];
+        resultat += str[0]; //attribute definition
         resultat += "}\n";
-        resultat += str[1];
+        resultat += str[1]; //relations between classes information
     }
     //console.log(resultat);
     return resultat;
@@ -67,7 +68,6 @@ function selectAttribute(node,elem){
             else if(c.type.includes('Enum<')){
                 let exp = /<([^>]+)>/;
                 let match = exp.exec(c.type);
-                //str += elem.name + "-->" + "\"" + c.name + "\"" + match[1] +"\n";
                 attribute += c.name +":"+ match[1] + "\n"
             }
             else if(isClassName(node,c.type)){
@@ -79,17 +79,17 @@ function selectAttribute(node,elem){
                 attribute += c.name + ":" + c.type + "\n";
             }
         }
-        else{
+        else{//Distibution
             if(elem.type == 'Enum'){
                 attribute += c.name + "\n";
             }else{
                 if(lastName.length != 0){
-                    str += lastName[0] + "-[hidden]>" + c.name + "\n";
+                    str += lastName[0] + "-[hidden]>" + c.name + "\n";//sibling relation
                     lastName.pop();
                 }else{
                     lastName.push(c.name);
                 }
-                str += elem.name + " <|-- " + c.name+"\n";
+                str += elem.name + " <|-- " + c.name+"\n";  //Inheritance relation
             }
             
         }
