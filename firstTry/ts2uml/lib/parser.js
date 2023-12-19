@@ -23,7 +23,7 @@ class TSNode {
             map[this.name] = this.children.length
                 ? this.children
                       .map(child => child.getObject())
-                      .reduce((pv, child) => {          //union
+                      .reduce((pv, child) => {//union
                           for (let key in child) {
                               if (pv.hasOwnProperty(key) || key in pv) {
                                   if (key != "Number" && key != "Date"){//assign direct
@@ -78,8 +78,8 @@ let visit = (parent,root) => node => {
                     }
                     else{
                         //let type = parent.name;
-                        let type = 'string';
-                        ts.forEachChild(parent.addChildren(node.types[i].literal.text,type));
+                        //let type = 'enumType';
+                        ts.forEachChild(parent.addChildren("\"" + node.types[i].literal.text + "\""));
                     }
                 }
             break;         
@@ -97,14 +97,14 @@ let visit = (parent,root) => node => {
             }
             if (propertyType.kind === ts.SyntaxKind.TypeReference) {
                 let realPropertyType = propertyType;
-                //let typeName1="number";
                 let type = getNonPrimitiveArrayType(arrayDeep, realPropertyType)
                 if (type.includes("undefined")){
                     type = 'Array<'+getPrimmitiveTypeName(propertyType.typeArguments[0])+'>';
                 }
                 parent.addChildren(realPropertyName,type);
             } else if(propertyType.kind === ts.SyntaxKind.UnionType && propertyName.text != "$container"){ //enum
-                let name = propertyName.text; let type = 'Enum<' + name + "Type" + '>'; 
+                let name = propertyName.text; 
+                let type = 'Enum<' + name + "Type" + '>'; 
                 parent.addChildren(name, type);
                 let currentPosition = { parent, node }; // recoding position
                 //enum type
@@ -112,9 +112,7 @@ let visit = (parent,root) => node => {
                 parent = root;
                 let EnumName = name + "Type" ;
                 parent[EnumName] = {};
-                //for(var i=0; i< propertyType.types.length ; i++){
-                    ts.forEachChild(node, visit(parent.addChildren(EnumName),root));
-                //}
+                ts.forEachChild(node, visit(parent.addChildren(EnumName,'Enum'),root));
                 //go back to position recoding
                 parent = currentPosition.parent;
                 node = currentPosition.node;
@@ -172,10 +170,19 @@ function getNonPrimitiveArrayType(arrayDeep, realPropertyType) {
             : 'text' in realPropertyType
                 ? realPropertyType.typeName.text
                 : realPropertyType.typeArguments?.length > 0
-                    ? realPropertyType.typeName.text + "<" + realPropertyType.typeArguments[0].typeName?.text + ">"
+                    //? realPropertyType.typeName.text + "<" + realPropertyType.typeArguments[0].typeName?.text + ">"
+                    ? arrayTypeName(realPropertyType)
                     : realPropertyType.typeName.text // model
         ) +
         '>'.repeat(arrayDeep);
+}
+
+function arrayTypeName(realPropertyType){
+    let argumentType = realPropertyType.typeArguments[0].typeName?.text;
+    if(argumentType == 'Reference'){
+        argumentType = realPropertyType.typeArguments[0].typeArguments[0].typeName.text;
+    }
+    return realPropertyType.typeName.text + "<" + argumentType + ">"
 }
 
 function customStringify(obj, seen = new Set()) {

@@ -31,7 +31,13 @@ function toPUml(node) {//node.name="root"
     var resultat="";
     for (let i=0; i < node.children.length; i++){
         const elem = node.children[i];
-        resultat += "class "+ elem.name + "{\n";
+        if(elem.type?.includes('Enum')){
+            resultat += "enum "+ elem.name + "{\n";
+
+        }else{
+            resultat += "class "+ elem.name + "{\n";
+
+        }
         let str= selectAttribute(node,elem);
         resultat += str[0];
         resultat += "}\n";
@@ -61,7 +67,8 @@ function selectAttribute(node,elem){
             else if(c.type.includes('Enum<')){
                 let exp = /<([^>]+)>/;
                 let match = exp.exec(c.type);
-                str += elem.name + "-->" + "\"" + c.name + "\"" + match[1] +"\n";
+                //str += elem.name + "-->" + "\"" + c.name + "\"" + match[1] +"\n";
+                attribute += c.name +":"+ match[1] + "\n"
             }
             else if(isClassName(node,c.type)){
                 if(c.name != "$container"){
@@ -73,13 +80,18 @@ function selectAttribute(node,elem){
             }
         }
         else{
-            if(lastName.length != 0){
-                str += lastName[0] + "-[hidden]>" + c.name + "\n";
-                lastName.pop();
+            if(elem.type == 'Enum'){
+                attribute += c.name + "\n";
             }else{
-                lastName.push(c.name);
+                if(lastName.length != 0){
+                    str += lastName[0] + "-[hidden]>" + c.name + "\n";
+                    lastName.pop();
+                }else{
+                    lastName.push(c.name);
+                }
+                str += elem.name + " <|-- " + c.name+"\n";
             }
-            str += elem.name + " <|-- " + c.name+"\n";
+            
         }
     }
     return [attribute,str];
