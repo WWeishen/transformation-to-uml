@@ -1,12 +1,12 @@
-'use strict';
 const ts = require('typescript');
-const fs = require('fs')
+const fs = require('fs');
 const toPUml = require('./toUML/topu.js');
 const PROPERTY_TYPES = {
     any: ts.SyntaxKind.AnyKeyword,
     boolean: ts.SyntaxKind.BooleanKeyword,
     number: ts.SyntaxKind.NumberKeyword,
     string: ts.SyntaxKind.StringKeyword,
+    void :ts.SyntaxKind.VoidKeyword,
 };
 
 class TSNode {
@@ -47,10 +47,11 @@ class TSNode {
 
 //currying function; param is parent, return a function who takes one param 'node'
 let visit = (parent,root) => node => {
+    //console.log(node);
     //let test = customStringify(node);console.log(test);
     switch (node.kind) {
         case ts.SyntaxKind.NamedExports:
-            console.log("typeLiteral: "+node.getText())
+            console.log("typeLiteral: "+node.getText());
             break;
         case ts.SyntaxKind.ModuleDeclaration:
             let moduleName = node.name.text;
@@ -59,7 +60,7 @@ let visit = (parent,root) => node => {
         case ts.SyntaxKind.ModuleBlock:
             ts.forEachChild(node, visit(parent,root));
             break;
-        case ts.SyntaxKind.InterfaceDeclaration:    //Structure
+        case ts.SyntaxKind.InterfaceDeclaration , ts.SyntaxKind.ClassDeclaration:    //Structure
             let interfaceName = node.name.text;
             parent[interfaceName] = {};     //creat since the root
             ts.forEachChild(node, visit(parent.addChildren(interfaceName),root));
@@ -81,7 +82,7 @@ let visit = (parent,root) => node => {
                     }
                 }
             break;         
-        case ts.SyntaxKind.PropertySignature:   //Element including in a structure
+        case ts.SyntaxKind.PropertySignature, ts.SyntaxKind.PropertyDeclaration:   //Element including in a structure
             let propertyName = node.name; 
             let propertyType = node.type;
             let arrayDeep = 0;
@@ -121,9 +122,48 @@ let visit = (parent,root) => node => {
                 }
             }
             break;
+        case ts.SyntaxKind.Constructor: //176
+            let constructorName = "constructor";
+            ts.forEachChild(node, visit(parent.addChildren(constructorName,"Constructor"),root));
+            break;
+        case ts.SyntaxKind.MethodDeclaration: //174
+            let methodName = node.name.text;
+            ts.forEachChild(node, visit(parent.addChildren(methodName,"Method"),root));
+            break;
+        case ts.SyntaxKind.Parameter://169
+            let paramName = node.name.text;
+            let paramType = getPrimmitiveTypeName(node.type);
+            paramType? 
+            ts.forEachChild(parent.addChildren(paramName,paramType)) 
+            : ts.forEachChild(parent.addChildren(paramName,getNonPrimitiveArrayType(0,node.type)));
+            break;
+        case ts.SyntaxKind.HeritageClause : //298
+            let heritageName = node.types[0].expression.text;
+            ts.forEachChild(node, visit(parent.addChildren(heritageName,"Heritage"),root));
+            break;
         default:
     }
 };
+
+// module.exports = function analyseFile(filename,options) {
+//     const ROOT_NAME = 'root';
+//     const node = new TSNode(ROOT_NAME);
+//     let program = ts.createProgram([filename], options);
+//     let sourceFile = program.getSourceFile(filename);
+//     if (sourceFile) {
+//         ts.forEachChild(sourceFile, visit(node, node));
+//         let res = toPUml(node);
+//         fs.writeFile(filename + ".puml", res, (err) => {
+//             if (err) {
+//                 throw err;
+//             }
+//             console.log("Data has been written to file successfully.");
+//         });
+//         return node;
+//     } else {
+//         console.log("File not found.");
+//     }
+// };
 
 module.exports = function getNode(filename, options) {
     const ROOT_NAME = 'root';
@@ -145,6 +185,7 @@ module.exports = function getNode(filename, options) {
     })
 }
 
+
 function getPrimmitiveTypeName(typeKind) {
     for (let type in PROPERTY_TYPES) {
         if (typeKind.kind === PROPERTY_TYPES[type]) {
@@ -161,7 +202,7 @@ function getNonPrimitiveArrayType(arrayDeep, realPropertyType) {
                 ? realPropertyType.typeName.text
                 : realPropertyType.typeArguments?.length > 0
                     ? arrayTypeName(realPropertyType)
-                    : realPropertyType.typeName.text // model
+                    : realPropertyType.typeName?.text // model
         ) +
         '>'.repeat(arrayDeep);
 }
@@ -173,27 +214,3 @@ function arrayTypeName(realPropertyType){
     }
     return realPropertyType.typeName.text + "<" + argumentType + ">"
 }
-
-// function customStringify(obj, seen = new Set()) {
-//     if (typeof obj === 'object' && obj !== null) {
-//       if (seen.has(obj)) {
-//         return '[Circular Reference]';
-//       }
-  
-//       seen.add(obj);
-
-//       if (Array.isArray(obj)) {
-//         const arrayContents = obj.map(item => customStringify(item, seen));
-//         return `[${arrayContents.join(', ')}]`;
-//       } else {
-//         const objectContents = Object.keys(obj).map(key => {
-//           const value = customStringify(obj[key], seen);
-//           return `${key}: ${value}`;
-//         });
-//         return `{${objectContents.join(', ')}}`;
-//       }
-//     } else {
-      
-//         return JSON.stringify(obj); 
-//     }
-// }

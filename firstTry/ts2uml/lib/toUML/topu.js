@@ -75,6 +75,17 @@ function selectAttribute(node,elem){
                     str += elem.name + "*--> " + "\"" + c.name  + "\\n1 " + "\"" + c.type + "\n";
                 }
             }
+            else if(c.type=='Constructor' || c.type == 'Method'){
+                if(c.children.length===0){
+                    attribute += c.name + "( )\n";
+                }
+                c.children.forEach(param => {
+                    attribute += c.name + "(" + param.name + ":" + param.type + ")\n";
+                });
+            }
+            else if(c.type == 'Heritage'){
+                str += c.name + " <|-- " + elem.name +"\n";  //Inheritance relation
+            }
             else{
                 attribute += c.name + ":" + c.type + "\n";
             }
@@ -96,6 +107,5 @@ function selectAttribute(node,elem){
     }
     return [attribute,str];
 }
-
 
 module.exports = toPUml;
