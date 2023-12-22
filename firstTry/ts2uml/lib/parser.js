@@ -47,7 +47,6 @@ class TSNode {
 
 //currying function; param is parent, return a function who takes one param 'node'
 let visit = (parent,root) => node => {
-    //console.log(node);
     //let test = customStringify(node);console.log(test);
     switch (node.kind) {
         case ts.SyntaxKind.NamedExports:
@@ -103,10 +102,9 @@ let visit = (parent,root) => node => {
                 let realProperty1Type = property1Type;
                 let type = getNonPrimitiveArrayType(array1Deep, realProperty1Type);//Type is a reference to another structure
                 if (type.includes("undefined")){
-                    type = 'Array<'+getPrimmitiveTypeName(property1Type.typeArguments[0])+'>';//if not found then search in PROPERTY_TYPES
+                    type = 'Array<'+getPrimitiveTypeName(property1Type.typeArguments[0])+'>';//if not found then search in PROPERTY_TYPES
                 }
-                visit(parent.addChildren(realProperty1Name,type),root)
-                //ts.forEachChild(node,visit(parent.addChildren(realProperty1Name,type),root));
+                visit(parent.addChildren(realProperty1Name,type),root);
             } else if(property1Type.kind === ts.SyntaxKind.UnionType && property1Name.text != "$container"){ //enumType
                 let name = property1Name.text; 
                 let type = 'Enum<' + name + "Type" + '>'; 
@@ -123,13 +121,12 @@ let visit = (parent,root) => node => {
                 node = currentPosition.node;
             }
             else {  //Type is none of Non-terminaux
-                if(getPrimmitiveTypeName(property1Type)){     //Primmitive Type
-                    //parent.addChildren(realProperty1Name, getPrimmitiveTypeName(propertyType));
-                    visit(parent.addChildren(realProperty1Name,getPrimmitiveTypeName(property1Type)),root)
+                if(getPrimitiveTypeName(property1Type)){//Primitive Type
+                    visit(parent.addChildren(realProperty1Name,getPrimitiveTypeName(property1Type)),root)
                 }
             }
             break;      
-        case ts.SyntaxKind.PropertySignature:   //Element including in a structure
+        case ts.SyntaxKind.PropertySignature://Element including in a structure
             let propertyName = node.name; 
             let propertyType = node.type;
             let arrayDeep = 0;
@@ -141,18 +138,16 @@ let visit = (parent,root) => node => {
                 arrayDeep++;
                 propertyType = propertyType.elementType;
             }
-            if (propertyType.kind === ts.SyntaxKind.TypeReference) {    //reference
+            if (propertyType.kind === ts.SyntaxKind.TypeReference) {//reference
                 let realPropertyType = propertyType;
                 let type = getNonPrimitiveArrayType(arrayDeep, realPropertyType);//Type is a reference to another structure
                 if (type.includes("undefined")){
-                    type = 'Array<'+getPrimmitiveTypeName(propertyType.typeArguments[0])+'>';//if not found then search in PROPERTY_TYPES
+                    type = 'Array<'+getPrimitiveTypeName(propertyType.typeArguments[0])+'>';//if not found then search in PROPERTY_TYPES
                 }
                 visit(parent.addChildren(realPropertyName,type),root)
-                //ts.forEachChild(node,visit(parent.addChildren(realPropertyName,type),root));
             } else if(propertyType.kind === ts.SyntaxKind.UnionType && propertyName.text != "$container"){ //enumType
                 let name = propertyName.text; 
                 let type = 'Enum<' + name + "Type" + '>'; 
-                //parent.addChildren(name, type);
                 visit(parent.addChildren(name,type),root);
                 let currentPosition = { parent, node };
                 //add an interface "EnumType" since the root
@@ -165,9 +160,8 @@ let visit = (parent,root) => node => {
                 node = currentPosition.node;
             }
             else {  //Type is none of Non-terminaux
-                if(getPrimmitiveTypeName(propertyType)){     //Primmitive Type
-                    //parent.addChildren(realPropertyName, getPrimmitiveTypeName(propertyType));
-                    visit(parent.addChildren(realPropertyName,getPrimmitiveTypeName(propertyType)),root)
+                if(getPrimitiveTypeName(propertyType)){     //Primitive Type
+                    visit(parent.addChildren(realPropertyName,getPrimitiveTypeName(propertyType)),root)
                 }
             }
             break;
@@ -185,7 +179,7 @@ let visit = (parent,root) => node => {
             break;
         case ts.SyntaxKind.Parameter://169
             let paramName = node.name.text;
-            let paramType = getPrimmitiveTypeName(node.type);
+            let paramType = getPrimitiveTypeName(node.type);
             paramType? 
             ts.forEachChild(visit(parent.addChildren(paramName,paramType),root))
             : ts.forEachChild(visit(parent.addChildren(paramName,getNonPrimitiveArrayType(0,node.type)),root));
@@ -241,7 +235,7 @@ module.exports = function getNode(filename, options) {
 }
 
 
-function getPrimmitiveTypeName(typeKind) {
+function getPrimitiveTypeName(typeKind) {
     for (let type in PROPERTY_TYPES) {
         if (typeKind.kind === PROPERTY_TYPES[type]) {
             return type;
