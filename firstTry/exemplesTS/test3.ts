@@ -1,6 +1,6 @@
 //Interfaces and References
 interface IShape {
-    draw(): void;
+    draw(): void;//
 }
 
 class Circle implements IShape {

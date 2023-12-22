@@ -60,7 +60,12 @@ let visit = (parent,root) => node => {
         case ts.SyntaxKind.ModuleBlock:
             ts.forEachChild(node, visit(parent,root));
             break;
-        case ts.SyntaxKind.InterfaceDeclaration , ts.SyntaxKind.ClassDeclaration:    //Structure
+        case ts.SyntaxKind.ClassDeclaration:
+            let className = node.name.text;
+            parent[className] = {};     //creat since the root
+            ts.forEachChild(node, visit(parent.addChildren(className),root));
+            break;
+        case ts.SyntaxKind.InterfaceDeclaration:    //264 Structure
             let interfaceName = node.name.text;
             parent[interfaceName] = {};     //creat since the root
             ts.forEachChild(node, visit(parent.addChildren(interfaceName),root));
@@ -73,16 +78,58 @@ let visit = (parent,root) => node => {
             }
             break;
         case ts.SyntaxKind.UnionType:                   
-                for(var i=0; i<node.types.length ; i++){//Types for distribution
-                    if(node.types[i].typeName){
-                        ts.forEachChild(parent.addChildren(node.types[i].typeName.text));
-                    }
-                    else{//Enum value for enumType
-                        ts.forEachChild(parent.addChildren("\"" + node.types[i].literal.text + "\""));
-                    }
+            for(var i=0; i<node.types.length ; i++){//Types for distribution
+                if(node.types[i].typeName){
+                    ts.forEachChild(parent.addChildren(node.types[i].typeName.text));
                 }
-            break;         
-        case ts.SyntaxKind.PropertySignature, ts.SyntaxKind.PropertyDeclaration:   //Element including in a structure
+                else{//Enum value for enumType
+                    ts.forEachChild(parent.addChildren("\"" + node.types[i].literal.text + "\""));
+                }
+            }
+        break; 
+        case ts.SyntaxKind.PropertyDeclaration: //172
+            let property1Name = node.name; 
+            let property1Type = node.type;
+            let array1Deep = 0;
+            let realProperty1Name =
+                'string' !== typeof property1Name && 'text' in property1Name
+                    ? property1Name.text
+                    : property1Name;
+            while (property1Type.kind === ts.SyntaxKind.ArrayType) {//if type is array
+                array1Deep++;
+                property1Type = property1Type.elementType;
+            }
+            if (property1Type.kind === ts.SyntaxKind.TypeReference) {    //reference
+                let realProperty1Type = property1Type;
+                let type = getNonPrimitiveArrayType(array1Deep, realProperty1Type);//Type is a reference to another structure
+                if (type.includes("undefined")){
+                    type = 'Array<'+getPrimmitiveTypeName(property1Type.typeArguments[0])+'>';//if not found then search in PROPERTY_TYPES
+                }
+                visit(parent.addChildren(realProperty1Name,type),root)
+                //ts.forEachChild(node,visit(parent.addChildren(realProperty1Name,type),root));
+            } else if(property1Type.kind === ts.SyntaxKind.UnionType && property1Name.text != "$container"){ //enumType
+                let name = property1Name.text; 
+                let type = 'Enum<' + name + "Type" + '>'; 
+                //parent.addChildren(name, type);
+                visit(parent.addChildren(name,type),root);
+                let currentPosition = { parent, node };
+                //add an interface "EnumType" since the root
+                parent = root;
+                let EnumName = name + "Type" ;
+                parent[EnumName] = {};
+                ts.forEachChild(node, visit(parent.addChildren(EnumName,'Enum'),root));
+                //go back to position recoding
+                parent = currentPosition.parent;
+                node = currentPosition.node;
+            }
+            else {  //Type is none of Non-terminaux
+                if(getPrimmitiveTypeName(property1Type)){     //Primmitive Type
+                    //parent.addChildren(realProperty1Name, getPrimmitiveTypeName(propertyType));
+                    visit(parent.addChildren(realProperty1Name,getPrimmitiveTypeName(property1Type)),root)
+                }
+            }
+            break;      
+        case ts.SyntaxKind.PropertySignature:   //Element including in a structure
             let propertyName = node.name; 
             let propertyType = node.type;
             let arrayDeep = 0;
@@ -100,12 +147,13 @@ let visit = (parent,root) => node => {
                 if (type.includes("undefined")){
                     type = 'Array<'+getPrimmitiveTypeName(propertyType.typeArguments[0])+'>';//if not found then search in PROPERTY_TYPES
                 }
-                parent.addChildren(realPropertyName,type);
+                visit(parent.addChildren(realPropertyName,type),root)
+                //ts.forEachChild(node,visit(parent.addChildren(realPropertyName,type),root));
             } else if(propertyType.kind === ts.SyntaxKind.UnionType && propertyName.text != "$container"){ //enumType
                 let name = propertyName.text; 
                 let type = 'Enum<' + name + "Type" + '>'; 
-                parent.addChildren(name, type);
-
+                //parent.addChildren(name, type);
+                visit(parent.addChildren(name,type),root);
                 let currentPosition = { parent, node };
                 //add an interface "EnumType" since the root
                 parent = root;
@@ -118,7 +166,8 @@ let visit = (parent,root) => node => {
             }
             else {  //Type is none of Non-terminaux
                 if(getPrimmitiveTypeName(propertyType)){     //Primmitive Type
-                    parent.addChildren(realPropertyName, getPrimmitiveTypeName(propertyType));
+                    //parent.addChildren(realPropertyName, getPrimmitiveTypeName(propertyType));
+                    visit(parent.addChildren(realPropertyName,getPrimmitiveTypeName(propertyType)),root)
                 }
             }
             break;
@@ -128,18 +177,24 @@ let visit = (parent,root) => node => {
             break;
         case ts.SyntaxKind.MethodDeclaration: //174
             let methodName = node.name.text;
-            ts.forEachChild(node, visit(parent.addChildren(methodName,"Method"),root));
+            ts.forEachChild(node,visit(parent.addChildren(methodName,"Method"),root));
+            break;
+        case ts.SyntaxKind.MethodSignature: //173
+            let methodSName = node.name.text;
+            ts.forEachChild(node,visit(parent.addChildren(methodSName,"Method"),root));
             break;
         case ts.SyntaxKind.Parameter://169
             let paramName = node.name.text;
             let paramType = getPrimmitiveTypeName(node.type);
             paramType? 
-            ts.forEachChild(parent.addChildren(paramName,paramType)) 
-            : ts.forEachChild(parent.addChildren(paramName,getNonPrimitiveArrayType(0,node.type)));
+            ts.forEachChild(visit(parent.addChildren(paramName,paramType),root))
+            : ts.forEachChild(visit(parent.addChildren(paramName,getNonPrimitiveArrayType(0,node.type)),root));
             break;
         case ts.SyntaxKind.HeritageClause : //298
             let heritageName = node.types[0].expression.text;
-            ts.forEachChild(node, visit(parent.addChildren(heritageName,"Heritage"),root));
+            if(heritageName!='AstNode'){
+                ts.forEachChild(node,visit((parent.addChildren(heritageName,"Heritage")), root));
+            }
             break;
         default:
     }

@@ -2,7 +2,7 @@ function isClassName(node,name){
     return node.children.some(element => element.name === name);
 }
 
-function isCContainer(node, cName) {
+function isCContainer(node, cName) { //if attributes contain $container
     for (let i = 0; i < node.children.length; i++) {
         const element = node.children[i];
         if (element.name === cName) {
@@ -16,7 +16,7 @@ function isCContainer(node, cName) {
     return false;
 }
 
-function isContainer(node,elem,c){
+function isContainer(node,elem,c){ //definite symbol "*"
     let result="";
     node.children.forEach(element => {
         if (!isCContainer(node, c) && element.name != elem.name) {
@@ -28,7 +28,7 @@ function isContainer(node,elem,c){
 }
 
 function toPUml(node) {//node.name="root"
-    var resultat="";
+    var resultat="@startuml\n";
     for (let i=0; i < node.children.length; i++){
         const elem = node.children[i];
         //Class
@@ -45,7 +45,7 @@ function toPUml(node) {//node.name="root"
         resultat += str[1]; //relations between classes information
     }
     //console.log(resultat);
-    return resultat;
+    return resultat+"@enduml";
 }
 
 function selectAttribute(node,elem){
@@ -76,12 +76,15 @@ function selectAttribute(node,elem){
                 }
             }
             else if(c.type=='Constructor' || c.type == 'Method'){
-                if(c.children.length===0){
-                    attribute += c.name + "( )\n";
-                }
+                let paramList = "";
                 c.children.forEach(param => {
-                    attribute += c.name + "(" + param.name + ":" + param.type + ")\n";
+                    paramList += param.name + ":" + param.type+ ",";
+                    if(isClassName(node,param.type)){
+                        str += elem.name + "\"1\"" + "--> " + "\"param : "+ param.name + "\" " + param.type +  "\n";
+                    }
                 });
+                paramList = paramList.slice(0, -1);
+                attribute += c.name + "(" + paramList + ")\n";
             }
             else if(c.type == 'Heritage'){
                 str += c.name + " <|-- " + elem.name +"\n";  //Inheritance relation
